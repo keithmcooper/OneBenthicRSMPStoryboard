@@ -1,0 +1,1078 @@
+---
+title: "RSMP Storyboard"
+output: 
+  flexdashboard::flex_dashboard:
+    storyboard: true
+
+---
+
+
+
+### 1. This app provides an overview of the <b>Regional Seabed Monitoring Programme</b>, an innovative approach to compliance monitoring adopted by the UK marine aggregate dredging sector.{data-commentary-width=450}
+
+
+```{r, echo=FALSE,out.width="100%", fig.align='right'}
+#was 80%
+library(shiny)
+library(knitr)
+#include_graphics("www/title_image3.png")#<img src="www/title_image.PNG" width="1300"></center>
+include_graphics("www/title_image_in_dev.png")
+```
+
+
+
+***
+
+```{r}
+h4(tags$b("Introduction"),style=c("color:#365F91"))
+```
+The RSMP seeks to ensure the seabed remains suitable for recolonisation after dredging, thereby satisfying the 'similar seabed' condition imposed on all licences and improving sustainability.
+
+The approach offers a number of benefits:
+
+- *Developers work collaboratively on environmental monitoring*
+- *Clear scientific rationale to ensure seabed recovery after dredging*
+- *More consistent and better quality data*
+- *Improved statistical power, with individual sites providing replicates of a treatment effect*
+- *Ability to differentiate between statistical and ecological significance*
+- *Big data used to identify limits of acceptable change*
+- *Outputs allow for effective decision making*
+- *On-line tools for data analysis*
+- *Regional reporting*
+- *Results allow for adaptive management to ensure seabed health*
+- *50% lower costs (Mineral Products Association, 2014)*
+
+This storeyboard app tells the story of the RSMP, from initial concept through to reporting (read tabs from left to right), and is designed to provide all stakeholders with a useful point of reference. 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<img src="www/OneBenthicLogocroppedwhitebackground.png" width="175" style="float: right; margin-right: 15px;">
+
+
+ 
+### 2. The <b>marine aggregate dredging industry</b> produces sand and gravel from offshore extraction sites for use in construction, fill and coastal defence. {data-commentary-width=1200}
+
+
+
+```{r}
+h4(tags$b("Location"),style=c("color:#365F91"))
+```
+
+- Extraction sites are located in seven dredging regions (see map opposite).
+
+<br>
+
+```{r}
+h4(tags$b("Dredging Process"),style=c("color:#365F91"))
+```
+<br>
+
+```{r}
+library(vembedr)
+library(dplyr)
+library(leaflet)
+library(shinydashboard)
+library(shiny)
+ 
+embed_url("https://www.youtube.com/watch?v=vX4WyYNNp3E") %>%
+  use_align("center")%>%use_rounded()
+
+#"https://www.youtube.com/watch?v=MhysyOJHY8A"
+#sand falcon 
+
+```
+<br>
+
+- Material is extracted using trailer suction hopper dredgers.
+- The dredging process involves a pipe being lowered to the seabed, and a powerful pump entrains water and sediment up into into the vessel hold.
+- As the cargo is loaded, water overspills from special chutes located in the side of the vessel.
+- Cargo composition (i.e. sand:gravel ratio) can be modified, where licence conditions allow, using a process called screening in which unwanted sediment fractions are returned to the seabed.
+- Cargos are offloaded at dedicated wharf facilities, or used directly for beach recharge and fill projects.
+
+<br>
+
+```{r}
+h4(tags$b("Further Information"),style=c("color:#365F91"))
+```
+
+- Further information on the marine aggregates industry can be found on the <a href="https://bmapa.org/">BMAPA</a> and  <a href="https://www.thecrownestate.co.uk/en-gb/what-we-do/on-the-seabed/minerals-dredging/">The Crown Estate</a> websites.
+
+***
+
+```{r,out.width="100%",out.height="100%"}
+library(shiny)
+library(leaflet)
+library(leaflet.extras)
+library(sf)
+library (RPostgres)
+library(DBI)
+library(plyr)
+library(dplyr)
+library(geojsonsf)
+library(sp)
+library(DBI)
+library(pool)
+library(RPostgreSQL)
+library(glue)
+library(postGIStools)
+library(config)
+library(knitr)
+library(shinyLP)
+#__________________________________________________________________________________________
+#### CREATE A CONNECTION TO OneBenthic LIVE ####
+Sys.setenv(R_CONFIG_ACTIVE = "one_benthic")
+
+dw <- config::get()
+
+pool <- dbPool(drv = dbDriver(dw$driver),
+               dbname = dw$database,
+               host = dw$server,
+               port =  dw$port,
+               user = dw$uid,
+               password = dw$pwd)
+#__________________________________________________________________________________________
+
+## GET API LINKS FROM OB
+aggapilink <- st_read (dsn = pool, query = "SELECT apilink FROM spatial.apilinks where id=10")
+
+hum_reg <-st_read (dsn = pool, query = "select * from ap_marine_aggregate.extraction_regions_old where region = 'humber'")
+ang_reg <-st_read (dsn = pool, query = "select * from ap_marine_aggregate.extraction_regions_old where region = 'anglian'")
+thames_reg <-st_read (dsn = pool, query = "select * from ap_marine_aggregate.extraction_regions_old where region = 'thames'")
+sc_reg <-st_read (dsn = pool, query = "select * from ap_marine_aggregate.extraction_regions_old where region = 'sc'")
+eec_reg <-st_read (dsn = pool, query = "select * from ap_marine_aggregate.extraction_regions_old where region = 'eec'")
+bc_reg <-st_read (dsn = pool, query = "select * from ap_marine_aggregate.extraction_regions_old where region = 'bristol_channel'")
+nw_reg <-st_read (dsn = pool, query = "select * from ap_marine_aggregate.extraction_regions_old where region = 'north_west'")
+## API
+agg <- readLines(as.character(aggapilink)) %>% paste(collapse = "\n") %>% geojson_sf()
+#### GET STATION DATA ####
+
+leaflet() %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas,options = providerTileOptions(noWrap = TRUE))%>%
+  #addTiles() %>%
+  addPolygons(data=agg,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,popup = paste0("<b>Name: </b>", agg$Area_Name, "<br>","<b>Number: </b>", agg$Area_Number,"<br>","<b>Company: </b>", agg$Company))%>%#
+   addPolygons(data=hum_reg,color = "#444444", group = 'Humber', weight = 1,fillOpacity = 0, smoothFactor = 0.5)%>%#
+  addPolygons(data=ang_reg,color = "#444444", group = 'Anglian',weight = 1,fillOpacity = 0, smoothFactor = 0.5)%>%#
+  addPolygons(data=thames_reg,color = "#444444", group = 'Thames',weight = 1,fillOpacity = 0, smoothFactor = 0.5)%>%#
+  addPolygons(data=sc_reg,color = "#444444", group = 'South Coast',weight = 1,fillOpacity = 0, smoothFactor = 0.5)%>%#
+  addPolygons(data=eec_reg,color = "#444444", group = 'Eastern Channel',weight = 1,fillOpacity = 0, smoothFactor = 0.5)%>%#
+  addPolygons(data=bc_reg,color = "#444444", group = 'Bristol Channel',weight = 1,fillOpacity = 0, smoothFactor = 0.5)%>%#
+  addPolygons(data=nw_reg,color = "#444444", group = 'North West',weight = 1,fillOpacity = 0, smoothFactor = 0.5)%>%#
+  addLayersControl(
+      overlayGroups = c('Humber', 'Anglian','Thames','Eastern Channel','South Coast','Bristol Channel', 'North West'),options = layersControlOptions(collapsed = FALSE))%>%#"wave_cab",
+      hideGroup(c('Humber', 'Anglian','Thames','Eastern Channel','South Coast','Bristol Channel', 'North West'))%>%
+setView(-1,52.53,zoom=7)
+
+
+```
+
+
+
+### 3. The extraction process can have a number of <b>environmental effects</b>, although these are dependent on the local environment.{data-commentary-width=1100}
+
+```{r}
+h4(tags$b("Research"),style=c("color:#365F91"))
+```
+
+- Potential direct and indirect effects of marine aggregate dredging are neatly presented in the figure below.
+<br>
+<br>
+
+```{r, echo=FALSE,out.width="80%", fig.align='center'}
+#include_graphics("www/malsf2.png")
+include_graphics("www/env_effects2.png")
+br()
+
+
+p(HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),"Source:", a("https://addyst.blogspot.co.uk/2015/01/marine-dredged-aggregates.html", href = "https://addyst.blogspot.co.uk/2015/01/marine-dredged-aggregates.html"))
+```
+<br>
+<br>
+
+- Dredge plumes may occur at the surface as a result of overspill or screening, or at the bed as a result of contact of the dredge pipe. 
+- Plumes are influenced by tides, and fine material may settle out beyond the confines of the licensed area.
+- Dredging may also change the topography of the seabed, through creation of dredge furrows and depressions. These features may become less visible over time, depending on local environmental conditions. 
+- Where the draghead makes contact with the seabed this results in removal of sediments and associated animal communities.
+- Understanding of the effects of marine aggregate dredging is underpinned by decades of research (see references opposite), most recently through the Aggregate Levy Sustainability Fund.
+
+
+
+***
+
+```{r}
+library(shiny)
+#h4("References",style=c("color:#044D94"))
+
+fluidRow(
+                     
+
+
+
+column(6, thumbnail_label(image = 'www/monograph1_screenshot.png', label = '',
+                                               content = 'Tillin, H. M., Houghton, A. J., Saunders, J. E. & Hull, S. C. (2011). Direct and Indirect Impacts of Marine Aggregate Dredging. Marine ALSF Science Monograph Series No. 1. MEPF 10/P144. (Edited by R. C. Newell & J. Measures). 41pp. ISBN: 978 0 907545 43 9.',
+                                               button_link = 'www/monograph1.pdf', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/malsf2.png', label = '',
+                                               content = 'Newell, R.C. and Woodcock, T.A. (Eds.). 2013. Aggregate Dredging and the Marine Environment: an overview of recent research and current industry practice. The Crown Estate, 165pp ISBN: 978-1-906410-41-4',
+                                               button_link = 'https://www.bmapa.org/documents/Aggregate_Dredging_and_the_Marine_Environment.pdf', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/mae_good_practice_report_cover.png', label = '',
+                                               content = 'Newell, R.C. and Garner, D.J. (Eds.), Marine aggregate dredging: helping to determine good practice. Marine Aggregate Levy Sustainability Fund (ALSF) conference proceedings: September 2006. Marine Aggregate Levy Sustainability Fund (ALSF) Conference Bath, UK, Marine Ecological Surveys Ltd., 152–155',
+                                               button_link = 'https://tethys.pnnl.gov/sites/default/files/publications/Nedwell_and_Garner_2006.pdf', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/implications.png', label = '',
+                                               content = 'Cooper, K.M., Curtis, M., Wan Hussin, W.M.R., Barrio Froján, C.R.S., Defew, E.C., Nye, V., Patterson, D.M., 2011. Implications of dredging induced changes in sediment particle size composition for the structure and function of marine benthic macrofaunal communities. Mar. Pollut. Bull. 62, 2087-2094.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me'))
+
+       
+
+ )
+#############
+```
+
+
+
+
+
+### 4. It is accepted that dredging will lead to a loss of sediment and associated animal communities. The important question for sustainability is what happens to the site after cessation of dredging (i.e. <b>recovery</b>)? {data-commentary-width=1200}
+
+```{r}
+h4(tags$b("What we know about recovery"),style=c("color:#365F91"))
+```
+
+- Understanding of seabed recovery has improved in recent decades (see relevant publications opposite).
+<br><br>
+- Studies show that fauna will recolonise dredge areas, but the nature of the recovery will depend on how much the physical habitat, especially the composition of sediments, has changed.
+<br><br>
+- Physical changes such as accumulated fine sands may naturally disperse under the influence of tidal currents, although this can delay the faunal recovery process (see example below from Waye-Barker et al. (2015).
+<br>
+<br>
+<br>
+```{r, echo=FALSE,out.height="25%", fig.align='center'}
+
+
+include_graphics("www/recover_trajectory2.png")
+```
+
+
+
+
+
+***
+
+```{r}
+library(shinyLP)
+#h4("References",style=c("color:#044D94"))
+
+fluidRow(
+                     
+column(4, thumbnail_label(image = 'www/monograph2_screenshot.png', label = '',
+                                               content = 'Hill, J. M., Marzialetti, S. & Pearce, B. (2011). Recovery of Seabed Resources Following Marine Aggregate Extraction. Marine ALSF Science Monograph Series No. 2. MEPF 10/P148. (Edited by R. C. Newell & J. Measures). 44pp. ISBN: 978 0 907545 45 3.',
+                                               button_link = 'www/monograph2.pdf', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/waye_barker.PNG', label = '',
+                                               content = 'Waye-Barker, G., McIlwaine, P., Lozac, S., Cooper, K.M., 2015. The effects of marine sand and gravel extraction on the sediment particle size and macrofaunal community of a commercial dredging site (15 years post-dredging). Mar. Pollut. Bull. 99 (1-2), 207-215.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/foden_screenshot.PNG', label = '',
+                                               content = 'Foden, J., Rogers, S.I., Jones, A.P. (2009). Recovery rates of UK seabed habitats after cessation of aggregate extraction. Mar. Ecol. Prog. Ser. 390:15-26. https://doi.org/10.3354/meps08169',
+                                               button_link = 'https://www.int-res.com/abstracts/meps/v390/p15-26/', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/implications.png', label = '',
+                                               content = 'Cooper, K.M., Curtis, M., Wan Hussin, W.M.R., Barrio Froján, C.R.S., Defew, E.C., Nye, V., Patterson, D.M., 2011. Implications of dredging induced changes in sediment particle size composition for the structure and function of marine benthic macrofaunal communities. Mar. Pollut. Bull. 62, 2087-2094.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/hastings_recovery.png', label = '',
+                                               content = 'Cooper, K.M., Boyd, S.E., Eggleton J.E., Limpenny, D. S., Rees, H. L. and Vanstaen, K., 2007. Recovery of the seabed following marine aggregate dredging on the Hastings Shingle Bank off the southeast coast of England. Estuar. Coast. Shelf Sci. 75, 547-558.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/wan_hussin.png', label = '',
+                                               content = 'Wan Hussin, W.M.R., Cooper, K.M., Barrio Froján, C.R.S., Defew, E.C., Paterson, D.M., 2012. Impacts of physical disturbance on the recovery of a macrofaunal community: A comparative analysis using traditional and novel approaches. Ecol. Indic. 12, 37-45.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/asessment_p1_screenshot.PNG', label = '',
+                                               content = 'Boyd, S.E., Cooper, K.M., Limpenny, D.S., Kilbride, R., Rees, H.L., Dearnaley, M.P., Stevenson, J., Meadows and Morris, C.D.  2004.  Assessment of the re-habilitation of the seabed following marine aggregate dredging.  Sci. Ser. Tech. Rep., CEFAS Lowestoft, 121: 151pp.',
+                                               button_link = 'www/cefas_tech121.pdf', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/asessment_p2_screenshot.PNG', label = '',
+                                               content = 'Cooper, K.M., Eggleton, J.D., Vize, S.J., Vanstaen, K., Smith, R., Boyd, S.E., Ware, S., Morris, C.D., Curtis, M., Limpenny, D.S. and Meadows, W.J., 2005. Assessment of the re-habilitation of the seabed following marine aggregate dredging - part II. Sci. Ser. Tech Rep., Cefas Lowestoft, 130: 82pp.',
+                                               button_link = 'www/cefas_tech130.pdf', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/assess_funct_screenshot.PNG', label = '',
+                                               content = 'Cooper, K.M., Barrio Froján, C.R.S., Defew, E., Curtis, M., Fleddum, A., Brooks, L. and. Paterson, D.M., 2008. Assessment of ecosystem function following marine aggregate dredging. J. Exp. Mar. Biol. Ecol. 366, 82-91.',
+                                               button_link = 'https://www.academia.edu/12681009/Assessment_of_ecosystem_function_following_marine_aggregate_dredging', button_label = 'Open')),
+column(4, thumbnail_label(image = 'www/towardsanintegratedapproach.png', label = '',
+                                               content = 'McIlwaine, P. Barry, P., Curtis, M., Limpenny, C., Garcia, C., Cooper, K.M. 2020. Long-term seabed recovery after marine aggregate dredging. Marine Pollution Bulletin (in prep)',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me'))
+
+        )
+
+#############
+```
+
+
+
+
+### 5. While persistent physical impacts can theoretically be addressed through active seabed <b>restoration</b>, measures are likley to be expensive and only partially successful. {data-commentary-width=1200}
+
+```{r}
+h4(tags$b("Restoration Approaches"),style=c("color:#365F91"))
+```
+
+- Potential seabed restoration techniques (active and passive) were explored in a report commissioned by industry and avaialble <a href="https://bmapa.org/documents/final_report_lowres.pdf">here.</a> 
+- Experimental trials include deposition of shell cultch (Collins & Mallinson, 2007) and gravel seeding (Cooper et al, 2007).
+<br>
+```{r, echo=FALSE,out.width="52%", fig.align='center'}
+include_graphics("www/rest_images_grav_seeding.png")#hast_hab_map_seds.png
+```
+<br>
+- Results from these studies show some success, but the work is challanging, expensive and arguably better termed 'enhancement' given the difficulty of replicating lost habitat.
+- Situations in which restoration might be required arguably represent a failure of monitoring/management.
+- To improve sustainability, the focus for monitoring must be to check on the status of the seabed to ensure that it can recover post dredging.
+
+
+***
+
+```{r}
+library(shiny)
+library(shinyLP)
+
+#h4("References",style=c("color:#044D94"))
+
+fluidRow(
+column(6, thumbnail_label(image = 'www/collins_and_malinson_cover.png', label = '',
+                                               content = 'Collins, K. and Mallinson, J., 2006. Use of shell to speed recovery of dredged aggregate seabed. In: Newell, R.C. and Garner, D.J. (Eds.), Marine aggregate dredging: helping to determine good practice. Marine Aggregate Levy Sustainability Fund (ALSF) conference proceedings: September 2006. Marine Aggregate Levy Sustainability Fund (ALSF) Conference Bath, UK, Marine Ecological Surveys Ltd., 152–155.',
+                                               button_link = 'https://tethys.pnnl.gov/sites/default/files/publications/Nedwell_and_Garner_2006.pdf', button_label = 'Click me')),                     
+column(6, thumbnail_label(image = 'www/gravel_seeding.png', label = '',
+                                               content = 'Cooper, K.M., Ware, S., Vanstaen, K. and Barry, J., 2011. Gravel seeding - A suitable technique for restoration of the seabed following marine aggregate dredging? Estuar. Coast. Shelf Sci. 91, 121-132.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me')),
+
+column(6, thumbnail_label(image = 'www/benefits_costs.png', label = '',
+                                               content = 'Cooper, K.M., Burdon, D., Atkins, J.P., Weiss, L., Somerfield, P., Elliott, M., Turner, K., Ware, S., Vivian, C., 2013. Can the benefits of physical seabed restoration justify the costs? An assessment of a disused aggregate extraction site off the Thames Estuary, UK. Mar. Pollut. Bull. 75, 33-45.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me'))
+        )
+#############
+```
+
+
+### 6. To maximise the potential for biological recovery, developers are required through a licence condition to <b>'leave the seabed in a 'similar condition'</b>, but what does this mean? {data-commentary-width=1200}
+
+
+```{r}
+h4(tags$b("What do we mean by 'similar'"),style=c("color:#365F91"))
+```
+- Deciding what constitutes a 'similar' seabed can be highly subjective.
+- To address this issue, Cefas developed a new approach to identifying similar seabed based on the range of habitat conditions naturally found in association with faunal communities.
+
+```{r}
+h4(tags$b("Here's how it works"),style=c("color:#365F91"))
+```
+<br>
+```{r, echo=FALSE,out.width="52%", fig.align='center'}
+include_graphics("www/hastings_hab_map.png")#hast_hab_map_seds.png
+```
+<br>
+
+- Grab sample data are used to establish the relationship between faunal assemblages (i.e. biota) and sediment particle size.
+
+- Understanding is then used to determine whether conditions within the licensed area remain suitable for recolonisation by the original assemblage type (see Cooper, 2012).
+
+- Approach tested at a regional scale using data from the East Channel (Cooper 2013). 
+
+***
+
+```{r}
+library(shinyLP)
+#h4("References",style=c("color:#044D94"))
+
+fluidRow(
+                     
+column(6, thumbnail_label(image = 'www/setting_limits.PNG', label = '',
+                                               content = 'Cooper, K.M., 2012.  Setting limits for acceptable change in sediment particle size composition following marine aggregate dredging. Mar. Pollut. Bull. 64, 1667-1677.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/setting_limits_testing.PNG', label = '',
+                                               content = 'Cooper, K.M., 2013. Setting limits for acceptable change in sediment particle size composition: Testing a new approach to managing marine aggregate dredging? Mar. Pollut. Bull. 73, 86-97.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me'))
+
+
+        )
+#############
+```
+
+
+
+
+### 7. In 2013, a decision was taken to further develop this concept of 'similar' sediment and to role it out as part of a regional approach to monitoring - the RSMP. {data-commentary-width=1200}
+
+```{r}
+h4(tags$b("Research & Development"),style=c("color:#365F91"))
+```
+
+- Work formed the basis of a PhD thesis, allowing for academic oversight (see Cooper, 2013).
+- A major tasks involved collation of data from multiple sources, to improve understanding of the relationship between fauna and sediments.
+- Collated data marked the start of the <a href="https://rconnect.cefas.co.uk/onebenthic_portal/">OneBenthic</a> initiative, with data subsequently used to gain insights into many other areas.
+<br>
+<br>
+```{r, echo=FALSE,out.width="60%", fig.align='center'}
+include_graphics("www/assem_seds.png")
+p(HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),em("Fig. Faunal assemblages and associated sediment particle size (From Cooper & Barry, 2017)."))
+```
+
+- A major fieldwork campaign was undertaken in 2014/15, funded by the aggregates industry, to ensure good sample coverage with aggregate dredging areas and zones of potential secondary effect.
+- Work was undertaken by Cefas, with support from the following organisations (funders in boxes):
+<br>
+<br>
+```{r, echo=FALSE,out.width="70%", fig.align='center'}
+include_graphics("www/logos3.png")
+```
+
+- Extensive work undertaken by the Marine Management Organisation and the aggregates industry to work out the practicalities of implementation (see documents opposite).
+
+***
+
+```{r}
+library(shinyLP)
+#h4("References",style=c("color:#044D94"))
+
+fluidRow(
+
+column(6, thumbnail_label(image = 'www/phd.png', label = '',
+                                               content = 'Cooper, K.M., 2013. Marine aggregate dredging: a new regional approach to environmental monitoring (Doctoral Thesis) Doctoral thesis, University of East Anglia. https://ueaeprints.uea.ac.uk/id/eprint/48093',
+                                               button_link = 'https://ueaeprints.uea.ac.uk/id/eprint/48093/', button_label = 'Click me')),  
+                       
+column(6, thumbnail_label(image = 'www/abigdataapproach.png', label = '',
+                                               content = 'Cooper, K.M, Barry, J. (2017). A big data approach to macrofaunal baseline
+assessment, monitoring and sustainable exploitation of the seabed. Scientific
+Reports, 7:12431 doi:10.1038/s41598-017-11377-9',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/cost_benefit_image.png', label = '',
+                                               content = 'Mineral Products Association, 2014. Marine Aggregate Regional Seabed Monitoring Plans (RSMP): Cost/Benefit Statement on behalf of the marine aggregate sector. 3pp',
+                                               button_link = 'www/cost_benefit.pdf', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/towardsanintegratedapproach.png', label = '',
+                                               content = '"Barrio Froján, C.R.S., Cooper, K.M., Bolam, S.G., 2016. Towards an integrated approach to marine benthic monitoring. Mar. Pollut. Bull. 104, 20-28.',
+                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/evolution_of_regional_approach.png', label = '',
+                                               content = 'Marine aggregate knowledge and understanding flow diagram 12/11/2020',
+                                               button_link = 'www/Marine aggregate knowledge and understanding flow diagram 12.11.20.pdf', button_label = 'Click me')),
+column(6, thumbnail_label(image = 'www/regulation.png', label = '',
+                                               content = 'An overview of the regional assessment approach 12/11/2020',
+                                               button_link = 'www/An overview of the regional assessment approach 12.11.20.pdf', button_label = 'Click me'))
+
+        )
+#############
+```
+
+
+
+### 8. Here's <b>how it works:</b>{data-commentary-width=1000}
+
+```{r}
+h4(tags$b("Survey Array"),style=c("color:#365F91"))
+```
+- There are seven RSMP regions, although surveys in the Bristol Channel and North-West are undertaken on a site by site basis. Explore the <b>survey arrays</b> in the map opposite.
+- An array of sampling stations is established across each site and surrounding area by Cefas. This will include approximately 20 stations within the PIZ and SIZ (i.e. 40 within zone of potential dredging effect). In addition, a small number of stations will be established in the area surrounding the site (CONTEXT area), and, if necessary, at a reference site.
+<br>
+<br>
+```{r, echo=FALSE,out.width="55%", fig.align='center'}
+include_graphics("www/HumberRSMPMap.PNG")
+```
+<br>
+<br>
+- A request for a survey array must be made via the MMO, so that Cefas can recover costs for the work (approximately 1 day of time).
+- Where possible, stations will be established at previously sampled sites, reducing the need for collection of new macrofaunal samples. 
+- Survey arrays are stored in the Survey Array Tool (https://rconnect.cefas.co.uk/onebenthic_surveyarray/).
+<br>
+<br>
+```{r, echo=FALSE,out.width="50%", fig.align='center'}
+include_graphics("www/OB_surveyarraytool.png")
+```
+<br>
+<br>
+```{r}
+h4(tags$b("Surveys"),style=c("color:#365F91"))
+```
+
+- All sites are sampled for macrofauna and sediment particle size during an initial baseline survey, providing a record of the assemblages present with areas of potential dredging effect (PIZ/SIZ), and improving understanding of the relationship between macrofaunal assemblages and habitst (sediment particle size).
+- The baseline benthic survey may be undertaken in isolation, or as part of a wider RSMP Monitoring survey. The choice will depend on: i) whether the site is in an area where RSMP surveys are undertaken regionally (Humber, Anglian, Thames, South Coast, East Channel), ii) the length of time until the next regional survey and whether this fits in with the developers timeframe for production of an EIA.
+- Sites are then monitored once every 5 years. During these surveys, macrofaunal samples are only required from the context area. These samples fulfil two objectives: (i) to ascertain and ensure that an un-impacted faunal assemblages remain within the wider region (this is important as these assemblage will play an important role in the recolonisation after dredging has ceased), and (ii) over time, the acquired time-series data will show the capacity of the region to cope with the level of anthropogenic pressure, be it from aggregate dredging or other sources.
+- During monitoring, stations within PIZ, SIZ and Reference are only sampled for sediment particle size. The logic behind this practice is that, if sedimentary conditions within the footprint of potential dredging effect remain within the regional range (i.e., the pre-defined limits of acceptable change have not been exceeded during dredging), then it should be possible for a return of the original faunal assemblage type after dredging has ceased. Reference sites provide a perspective on natural or non-dredging related change - this is important to aid interpretation of data from the PIZ/SIZ.
+
+
+- All samples are collected and processed in accordance with a strict protocols document, including quality control steps.
+```{r, echo=FALSE,out.width="20%", fig.align='center'}
+include_graphics("www/protocols_cover.PNG")
+```
+
+- Collected data are stored within the OneBenthic database, and a series of web apps are used for analysis of data (see following tabs).
+
+
+***
+
+
+
+```{r,out.height="100%",out.width="100%"}
+library(leaflet)
+
+#### SURVEY ARRAY TOOL ####
+
+#### BRING IN DATASET ####
+
+## Load packages
+library(shiny)
+library(leaflet)
+library(leaflet.extras)
+library(sf)
+library (RPostgres)
+library(DBI)
+library(plyr)
+library(dplyr)
+library(geojsonsf)
+library(sp)
+library(DBI)
+library(pool)
+library(RPostgreSQL)
+library(glue)
+library(postGIStools)
+library(config)
+library(knitr)
+library(shinyLP)
+#__________________________________________________________________________________________
+#### CREATE A CONNECTION TO OneBenthic LIVE ####
+Sys.setenv(R_CONFIG_ACTIVE = "one_benthic")
+
+dw <- config::get()
+
+pool <- dbPool(drv = dbDriver(dw$driver),
+               dbname = dw$database,
+               host = dw$server,
+               port =  dw$port,
+               user = dw$uid,
+               password = dw$pwd)
+#__________________________________________________________________________________________
+#### GET STATION DATA ####
+
+## Get data
+stations <- dbGetQuery(pool,                   
+                  "SELECT
+st.stationcode,
+st.stationlong,
+st.stationlat,
+st.stationgroup,
+st.stationsubgroup1,
+st.stationsubgroup2,
+st.active
+
+FROM
+associations.station as st
+
+WHERE
+st.active = 'TRUE'
+
+ORDER BY
+st.stationcode;")
+
+anglian <- stations[which(stations$stationsubgroup1 == 'Anglian RSMP' ),]
+
+#__________________________________________________________________________________________
+
+ref <- st_read(pool, query = "SELECT * FROM spatial.ref_box_all;")
+siz<- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas_siz;")
+agg <- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas;")
+ref_anglian <- ref[which(ref$region=='Anglian'),]
+agg_anglian <- agg[which(agg$region=='Anglian RSMP'),]
+siz_anglian <- siz[which(siz$region=='Anglian RSMP'),]
+ref_humber <- ref[which(ref$region=='Humber'),]
+agg_humber <- agg[which(agg$region=='Humber RSMP'),]
+siz_humber <- siz[which(siz$region=='Humber RSMP'),]
+ref_thames <- ref[which(ref$region=='Thames'),]
+agg_thames <- agg[which(agg$region=='Thames RSMP'),]
+siz_thames <- siz[which(siz$region=='Thames RSMP'),]
+ref_sc <- ref[which(ref$region=='South Coast'),]
+agg_sc <- agg[which(agg$region=='South Coast RSMP'),]
+siz_sc <- siz[which(siz$region=='South Coast RSMP'),]
+ref_ec <- ref[which(ref$region=='East Channel'),]
+agg_ec <- agg[which(agg$region=='East Channel RSMP'),]
+siz_ec <- siz[which(siz$region=='East Channel RSMP'),]
+ref_gs <- ref[which(ref$region=='Goodwin Sands'),]
+agg_gs <- agg[which(agg$region=='Goodwin Sands RSMP'),]
+siz_gs <- siz[which(siz$region=='Goodwin Sands RSMP'),]
+ref_bc_476 <- ref[which(ref$box=='BC Box 1'),]
+agg_bc_476 <- agg[which(agg$region=='Bristol Channel (476)'),]
+siz_bc_476 <- siz[which(siz$region=='Bristol Channel (476)'),]
+ref_bc_531 <- ref[which(ref$box=='BC Box 3'),]
+agg_bc_531 <- agg[which(agg$region=='Bristol Channel (531)'),]
+siz_bc_531 <- siz[which(siz$region=='Bristol Channel (531)'),]
+ref_bc_526 <- ref[which(ref$box=='BC Box 2'),]
+agg_bc_526 <- agg[which(agg$region=='Bristol Channel (526)'),]
+siz_bc_526 <- siz[which(siz$region=='Bristol Channel (526)'),]
+ref_bc_455_459_Bedywn <- ref[which(ref$box=='BC Box 3'),]
+agg_bc_455_459_Bedywn <- agg[which(agg$region=='Bristol Channel (455, 459, Bedywn)'),]
+siz_bc_455_459_Bedywn <- siz[which(siz$region=='Bristol Channel (455, 459, Bedywn)'),]
+ref_nw_392_393 <- ref[which(ref$box=='NW Box 2'| ref$box=='NW Box 3'),]
+agg_nw_392_393 <- agg[which(agg$region=='Hilbre Swash (Area 392_393)'),]
+siz_nw_392_393 <- siz[which(siz$region=='Hilbre Swash (Area 392_393)'),]
+ref_nw_457 <- ref[which(ref$box=='NW Box 1'),]
+agg_nw_457 <- agg[which(agg$region=='North West (457)'),]
+siz_nw_457 <- siz[which(siz$region=='North West (457)'),]
+#agg <- readLines("https://services2.arcgis.com/PZklK9Q45mfMFuZs/arcgis/rest/services/MineralsAggregatesSite_EngWalNI_TheCrownEstate/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson") %>% paste(collapse = "\n") %>% geojson_sf()
+
+leaflet() %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas,options = providerTileOptions(noWrap = TRUE))%>%
+  #addTiles() %>%
+  
+#addCircleMarkers(data = stations[stations$stationgroup == 'RSMP', ],~stationlong,~stationlat,
+#                       popup = paste0("<b>Station Code: </b>",stations[stations$stationgroup == 'RSMP', ]$stationcode,"<br>",
+#                                      "<b>Survey: </b>",stations[stations$stationgroup == 'RSMP', ]$stationsubgroup1
+#                       ),
+ #                      group = "myMarkers",
+ #                      
+#                       radius =2,
+#                       color = "red",
+#                       stroke = FALSE, fillOpacity = 1)%>%
+  ########
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Anglian RSMP', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Anglian RSMP', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Anglian RSMP', ]$stationsubgroup1
+                       ),
+                       group = "Anglian",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+
+########
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Thames RSMP', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Thames RSMP', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Thames RSMP', ]$stationsubgroup1
+                       ),
+                       group = "Thames",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Humber RSMP', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Humber RSMP', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Humber RSMP', ]$stationsubgroup1
+                       ),
+                       group = "Humber",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'South Coast RSMP', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'South Coast RSMP', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'South Coast RSMP', ]$stationsubgroup1
+                       ),
+                       group = "South Coast",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########  
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'East Channel RSMP', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'East Channel RSMP', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'East Channel RSMP', ]$stationsubgroup1
+                       ),
+                       group = "East Channel",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+######## 
+
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Bristol Channel (476)', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (476)', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (476)', ]$stationsubgroup1
+                       ),
+                       group = "Bristol Channel (476)",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Bristol Channel (455, 459, Bedywn)', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (455, 459, Bedywn)', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (455, 459, Bedywn)', ]$stationsubgroup1
+                       ),
+                       group = "Bristol Channel (455, 459, Bedywn)",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Bristol Channel (526)', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (526)', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (526)', ]$stationsubgroup1
+                       ),
+                       group = "Bristol Channel (526)",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Bristol Channel (531)', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (531)', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Bristol Channel (531)', ]$stationsubgroup1
+                       ),
+                       group = "Bristol Channel (531)",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'North West (457)', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'North West (457)', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'North West (457)', ]$stationsubgroup1
+                       ),
+                       group = "North West (457)",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Hilbre Swash (Area 392_393)', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Hilbre Swash (Area 392_393)', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Hilbre Swash (Area 392_393)', ]$stationsubgroup1
+                       ),
+                       group = "Hilbre Swash (Area 392_393)",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Goodwin Sands RSMP', ],~stationlong,~stationlat,
+                       popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Goodwin Sands RSMP', ]$stationcode,"<br>",
+                                      "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Goodwin Sands RSMP', ]$stationsubgroup1
+                       ),
+                       group = "Goodwin Sands RSMP",
+                       
+                       radius =2,
+                       color = "blue",
+                       stroke = FALSE, fillOpacity = 1)%>%
+########
+  #addPolygons(data=agg,color = "#444444", weight = 2, smoothFactor = 0.5,group = "agg",popup = paste0("<b>Name: </b>", agg$Area_Name, "<br>",
+  #                                                                                                        "<b>Number: </b>", agg$Area_Numbe))%>%
+####
+#   addPolygons(data=agg,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (PIZ)",popup = paste0("<b>Name: </b>", agg$area_name, "<br>","<b>Number: </b>", agg$area_numbe))%>%
+ #     addPolygons(data=siz,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (SIZ)",popup = paste0("<b>Name: </b>", siz$area_name, "<br>","<b>Number: </b>", siz$area_numbe))%>%
+ #     addPolygons(data=ref,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (REF)",popup = paste0("<b>Name: </b>", ref$box, "<br>","<b>Status: </b>", ref$sub_region))%>% 
+  addPolygons(data=ref_anglian,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", ref_anglian$box, "<br>","<b>Status: </b>", ref_anglian$sub_region))%>%
+  addPolygons(data=agg_anglian,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", agg_anglian$area_name, "<br>","<b>Number: </b>", agg_anglian$area_numbe))%>%   addPolygons(data=siz_anglian,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", siz_anglian$area_name, "<br>","<b>Number: </b>", siz_anglian$area_numbe))%>%
+ 
+   addPolygons(data=ref_humber,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", ref_humber$box, "<br>","<b>Status: </b>", ref_humber$sub_region))%>%
+  addPolygons(data=agg_humber,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", agg_humber$area_name, "<br>","<b>Number: </b>", agg_humber$area_numbe))%>% 
+  addPolygons(data=siz_humber,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", siz_humber$area_name, "<br>","<b>Number: </b>", siz_humber$area_numbe))%>%
+  
+  addPolygons(data=ref_thames,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", ref_thames$box, "<br>","<b>Status: </b>", ref_thames$sub_region))%>%
+  addPolygons(data=agg_thames,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", agg_thames$area_name, "<br>","<b>Number: </b>", agg_thames$area_numbe))%>% 
+  addPolygons(data=siz_thames,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", siz_thames$area_name, "<br>","<b>Number: </b>", siz_thames$area_numbe))%>% 
+    
+    addPolygons(data=ref_sc,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", ref_sc$box, "<br>","<b>Status: </b>", ref_sc$sub_region))%>%
+  addPolygons(data=agg_sc,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", agg_sc$area_name, "<br>","<b>Number: </b>", agg_sc$area_numbe))%>% 
+  addPolygons(data=siz_sc,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", siz_sc$area_name, "<br>","<b>Number: </b>", siz_sc$area_numbe))%>% 
+ 
+      addPolygons(data=ref_ec,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", ref_ec$box, "<br>","<b>Status: </b>", ref_ec$sub_region))%>%
+  addPolygons(data=agg_ec,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", agg_ec$area_name, "<br>","<b>Number: </b>", agg_ec$area_numbe))%>% 
+  addPolygons(data=siz_ec,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", siz_ec$area_name, "<br>","<b>Number: </b>", siz_ec$area_numbe))%>% 
+  
+        addPolygons(data=ref_gs,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", ref_gs$box, "<br>","<b>Status: </b>", ref_gs$sub_region))%>%
+  addPolygons(data=agg_gs,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", agg_gs$area_name, "<br>","<b>Number: </b>", agg_gs$area_numbe))%>% 
+  addPolygons(data=siz_gs,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", siz_gs$area_name, "<br>","<b>Number: </b>", siz_gs$area_numbe))%>% 
+  
+        addPolygons(data=ref_bc_476,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", ref_bc_476$box, "<br>","<b>Status: </b>", ref_bc_476$sub_region))%>%
+  addPolygons(data=agg_bc_476,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", agg_bc_476$area_name, "<br>","<b>Number: </b>", agg_bc_476$area_numbe))%>% 
+  addPolygons(data=siz_bc_476,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", siz_bc_476$area_name, "<br>","<b>Number: </b>", siz_bc_476$area_numbe))%>%   
+
+          addPolygons(data=ref_bc_531,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", ref_bc_531$box, "<br>","<b>Status: </b>", ref_bc_531$sub_region))%>%
+  addPolygons(data=agg_bc_531,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", agg_bc_531$area_name, "<br>","<b>Number: </b>", agg_bc_531$area_numbe))%>% 
+  addPolygons(data=siz_bc_531,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", siz_bc_531$area_name, "<br>","<b>Number: </b>", siz_bc_531$area_numbe))%>%   
+  
+            addPolygons(data=ref_bc_455_459_Bedywn,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", ref_bc_455_459_Bedywn$box, "<br>","<b>Status: </b>",ref_bc_455_459_Bedywn$sub_region))%>%
+  addPolygons(data=agg_bc_455_459_Bedywn,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", agg_bc_455_459_Bedywn$area_name, "<br>","<b>Number: </b>", agg_bc_455_459_Bedywn$area_numbe))%>% 
+  addPolygons(data=siz_bc_455_459_Bedywn,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", siz_bc_455_459_Bedywn$area_name, "<br>","<b>Number: </b>", siz_bc_455_459_Bedywn$area_numbe))%>%
+  
+            addPolygons(data=ref_bc_526,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", ref_bc_526$box, "<br>","<b>Status: </b>", ref_bc_526$sub_region))%>%
+  addPolygons(data=agg_bc_526,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", agg_bc_526$area_name, "<br>","<b>Number: </b>", agg_bc_526$area_numbe))%>% 
+  addPolygons(data=siz_bc_526,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", siz_bc_526$area_name, "<br>","<b>Number: </b>", siz_bc_526$area_numbe))%>%   
+  
+            addPolygons(data=ref_nw_392_393,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", ref_nw_392_393$box, "<br>","<b>Status: </b>", ref_nw_392_393$sub_region))%>%
+  addPolygons(data=agg_nw_392_393,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", agg_nw_392_393$area_name, "<br>","<b>Number: </b>", agg_nw_392_393$area_numbe))%>% 
+  addPolygons(data=siz_nw_392_393,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", siz_nw_392_393$area_name, "<br>","<b>Number: </b>", siz_nw_392_393$area_numbe))%>%   
+  
+              addPolygons(data=ref_nw_457,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", ref_nw_457$box, "<br>","<b>Status: </b>", ref_nw_457$sub_region))%>%
+  addPolygons(data=agg_nw_457,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", agg_nw_457$area_name, "<br>","<b>Number: </b>", agg_nw_457$area_numbe))%>% 
+  addPolygons(data=siz_nw_457,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", siz_nw_457$area_name, "<br>","<b>Number: </b>", siz_nw_457$area_numbe))%>%  
+  
+  ######
+      addLayersControl(
+      overlayGroups = c("Humber","Anglian","Thames","Goodwin Sands RSMP","South Coast","East Channel","Bristol Channel (476)","Bristol Channel (455, 459, Bedywn)","Bristol Channel (526)","Bristol Channel (531)","Hilbre Swash (Area 392_393)","North West (457)"),options = layersControlOptions(collapsed = FALSE))%>%#"wave_cab",
+      hideGroup(c("Humber","Anglian","Thames","Goodwin Sands RSMP","South Coast","East Channel","Bristol Channel (476)","Bristol Channel (455, 459, Bedywn)","Bristol Channel (526)","Bristol Channel (531)","Hilbre Swash (Area 392_393)","North West (457)"))%>%
+setView(-1,52.53,zoom=7)
+```
+ 
+
+
+
+
+### 9. Following completion of the baseline survey, an RSMP <b>Baseline Report</b>  must set out what faunal assemblages are present within development area and zone of influence. {data-commentary-width=830}
+
+```{r}
+
+#h4("Question",style=c("color:#044D94"))
+
+#br()
+h2(tags$b("Benthic Baseline"),style=c("color:#365F91"))
+h4(tags$b("Issue"),style=c("color:#044D94"))
+
+```
+
+- Understanding what benthic macrofaunal assemblages are present within the footprint of potential dredging effect is key to the RSMP approach and will determine what level of changes in habitat (i.e. sediment particle size) can be tolerated.
+- Following completion of the baseline RSMP survey, data and associated reports should be sent to <a href="mailto:keith.cooper@cefas.co.uk">Cefas</a> for upload to OneBenthic.
+
+```{r}
+h4(tags$b("Supporting Apps"),style=c("color:#044D94"))
+
+```
+- As part of the upload process, new macrofaunal data are matched to existing cluster groups (i.e. assemblage types) using the <a href="https://rconnect.cefas.co.uk/onebenthic_faunalclusterid/">OneBenthic Faunal Cluster ID Tool</a>. The methodology used in this app is set out in this <a href="https://www.sciencedirect.com/science/article/pii/S0964569120302696?via%3Dihub">publication</a>.
+- Once data have been uploaded then they will be visible in the <a href="https://rconnect.cefas.co.uk/content/25/">OneBenthic Baseline Tool</a>.
+
+```{r}
+library(vembedr)
+library(dplyr)
+#p <- ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
+#            geom_bar(position = "dodge")
+#ggplotly(p)
+embed_url("https://www.youtube.com/watch?v=_6BcR5amNEQ")%>%
+  use_align("center")%>%use_rounded()
+embed_url("https://www.youtube.com/watch?v=yB6F9HNOUcM&t=26s")%>%
+  use_align("center")%>%use_rounded()
+
+br()
+h4(tags$b("Reporting"),style=c("color:#044D94"))
+
+p("Baseline results should be reported in a site-specific report, using the template (see right) as a guide.")
+
+ 
+
+```
+
+***
+
+```{r, out.height="755px",out.width ="820",out.extra="page=2"}
+
+h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
+
+ #fig.width = 9, fig.height=8
+knitr::include_graphics("www/rsmp_reporting_baseline_templatev1.pdf") 
+
+```
+
+### 10. <b>Monitoring</b> surveys are undertaken every 5 years, with sediment data used to check for i) evidence of <b>Gross Sediment Change</b>. {data-commentary-width=830}
+
+```{r}
+
+#h4("Question",style=c("color:#044D94"))
+
+#br()
+h2(tags$b("Gross Sediment Change"),style=c("color:#365F91"))
+h4(tags$b("Issue"),style=c("color:#044D94"))
+```
+- Marine aggregate dredging has the potential to cause changes in seabed sediment composition as a result of the fallout of fine sediments, selective remove of particular sediment fractions or exposure of underlying material which is different in nature to that present before dredging.
+- Such changes can have implications for faunal recovery and thus sustainability.
+- Given the above, a primary goal of the RSMP is to establish whether there is any evidence of gross changes in sediment composition, both at the scale of the individual licence and the wider sub-region (if appropriate) and region.
+
+
+```{r}
+h4(tags$b("Supporting App"),style=c("color:#044D94"))
+```
+- Analysis is undertaken using the <a href="https://rconnect.cefas.co.uk/onebenthic_sedimentchange/">OneBenthic Sediment Change Tool.</a>
+- This app looks for evidence of statistically significant changes in sediment composition. Samples are assigned to treatment groups based on available polygons, with data (Wenthworth size classes) assessed using line plots, non-metric MDS, ANOSIM and SIMPER.
+- For a full explanation see the video below.
+<br>
+<br>
+```{r}
+library(vembedr)
+library(dplyr)
+embed_url("https://www.youtube.com/watch?v=NRTRsf6tj1o")%>%
+  use_align("center")%>%use_rounded()
+```
+<br>
+```{r}
+h4(tags$b("Reporting"),style=c("color:#044D94"))
+p("Monitoring data are analysed at a variety of spatial scales and must therefore be reported regionally using the template (see right) as a guide (see sections 2.2.1, 3.2.1 and 4.1.1).")
+
+
+#p <- ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
+#            geom_bar(position = "dodge")
+#ggplotly(p)
+
+
+
+
+ 
+
+```
+
+***
+
+```{r, out.height="755px",out.width ="820"}
+
+h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
+
+ #fig.width = 9, fig.height=8
+#knitr::include_graphics("www/grosssed_reporting.pdf") 
+knitr::include_graphics("www/rsmp_reporting_templatev3.pdf") 
+```
+
+### 11. and ii) whether local sediment change is likely to be <b>ecological significanct (M-test)</b>. {data-commentary-width=830}
+
+```{r}
+#h4("Question",style=c("color:#044D94"))
+h2(tags$b("Ecological Significance of Sediment Change"),style=c("color:#365F91"))
+#br()
+h4(tags$b("Issue"),style=c("color:#044D94"))
+```
+- It is possible for changes in sediment composition to be statistically significant, but of little consequence for the fauna (i.e. not ecologically significant).
+- A method for determining the ecological significance of changes in sediment composition at individual sampling stations was put forward in <a href="https://www.nature.com/articles/s41598-017-11377-9#:~:text=A%20big%20data%20approach%20offers,have%20long%2Dterm%20ecological%20significance.">Cooper and Barry, 2017,</a> and implimented in the <a href="https://openscience.cefas.co.uk/ob_mtest/">OneBenthic M-test Tool.</a>
+
+```{r}
+h4(tags$b("Supporting App"),style=c("color:#044D94"))
+```
+- The app looks at the sediment composition of each monitoring sample and determines, using a Mahalanobis distance test (see Cooper and Barry, 2017), whether the composition of sediments remains suitable for recolonisation by the original assemblage type. Failed samples are flagged and the sediment fractions responsible for are highlighted, providing useful information for adaptive management.
+- Note there are a variety of reasons why a sample may be flagged, including aggregate dredging, and it will be neccessary to determine the most likely cause using other sources of information (e.g. Electronic Monitoring system data showing the location and intensity of dredging). 
+- Data for use with the app can be obtained from OneBenthicAPI-5 (see API tab in
+the <a href="https://rconnect.cefas.co.uk/onebenthic_portal/">OneBenthic Portal</a>). Save data as a .csv file following instructions provided on the API tab.
+- For a full explanation see the video below.
+
+```{r}
+library(vembedr)
+library(dplyr)
+embed_url("https://www.youtube.com/watch?v=SUpKtbgB8e0&t=73s")%>%
+  use_align("center")%>%use_rounded()
+```
+<br>
+```{r}
+h4(tags$b("Reporting"),style=c("color:#044D94"))
+
+```
+- Monitoring data are analysed at a variety of spatial scales and must therefore be reported regionally using the template (see right) as a guide (see sections 2.2.2, 3.2.2 and 4.1.2).         
+
+
+***
+
+
+```{r, out.height="755px",out.width ="820"}
+
+h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
+
+ #fig.width = 9, fig.height=8
+#knitr::include_graphics("www/grosssed_reporting.pdf") 
+knitr::include_graphics("www/rsmp_reporting_templatev3.pdf") 
+
+```
+
+### 12. An assessment is also made regarding the status of faunal communities surrounding extraction sites, firstly by assessing the <b>spatial distribution of assemblage types</b>. {data-commentary-width=830}
+
+
+```{r}
+
+#h4("Question",style=c("color:#044D94"))
+
+#br()
+h2(tags$b("Faunal Assemblage Distibution"),style=c("color:#365F91"))
+h4(tags$b("Issue"),style=c("color:#044D94"))
+
+```
+- Benthic faunal communities surrounding aggregate extraction sites serve an important role in the functioning of the wider ecosystem and are a source of adults and larvae for recolonisation of extraction sites after cessation of dredging.
+- One means of checking on the health of these communities is to monitor for changes in assemblage distribution. For example, are the patterns seen in the baseline tool still evident?
+```{r}
+h4(tags$b("Supporting App"),style=c("color:#044D94"))
+```
+- Macrofaunal data from monitoring samples (CONTEXT area only) are matched to existing cluster groups using the approach set out in this <a href="https://doi.org/10.1016/j.ocecoaman.2020.105361">paper</a> and implimented in the  <a href="https://rconnect.cefas.co.uk/onebenthic_faunalclusterid/">OneBenthic Faunal Cluster ID Tool</a>.
+- Patterns should be compared with the baseline and previous monitoring campaigns.
+- See the video below For a full explanation of how the tool works.
+```{r}
+library(vembedr)
+library(dplyr)
+embed_url("https://www.youtube.com/watch?v=_6BcR5amNEQ&feature=youtu.be")%>%
+  use_align("center")%>%use_rounded()
+```
+<br>
+```{r}
+h4(tags$b("Reporting"),style=c("color:#044D94"))
+
+```
+- Monitoring data are analysed and reported at a regional scale using the template (see right) as a guide (see section 2.2.3, 3.2.3 and 4.1.3).
+
+***
+```{r, out.height="755px",out.width ="820"}
+
+h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
+
+ #fig.width = 9, fig.height=8
+knitr::include_graphics("www/rsmp_reporting_templatev3.pdf")  
+
+```
+
+
+### 13. and secondly, <b>how macrobenthic communities may have changed</b>. {data-commentary-width=830}
+
+```{r}
+
+#h4("Question",style=c("color:#044D94"))
+
+#br()
+h2(tags$b("Change in Macrobenthic Communities"),style=c("color:#365F91"))
+h4(tags$b("Issue"),style=c("color:#044D94"))
+```
+- Benthic faunal communities surrounding aggregate extraction sites serve an important role in the functioning of the wider ecosystem and are a source of adults and larvae for recolonisation of extraction sites after cessation of dredging.
+- A further means of checking on the health of these communities is to compare data from baseline and monitoring surveys, using both univariate (i.e Analysis of Variance) and multivariate (nMDS ordination, ANOSIM and SIMPER) approaches.
+
+
+```{r}
+h4(tags$b("Supporting App"),style=c("color:#044D94"))
+```
+- Analysis is undertaken using the <a href="https://rconnectdev.corp.cefas.co.uk/content/138">OneBenthic Faunal Change Tool.</a>
+- This app looks for evidence of statistically significant changes in faunal composition. Samples are assigned to treatment groups based on available polygons, with data assessed using ANOVA, non-metric MDS, ANOSIM and SIMPER.
+- For a full explanation see the video below.
+<br>
+<br>
+```{r}
+library(vembedr)
+library(dplyr)
+#embed_url("https://www.youtube.com/watch?v=NRTRsf6tj1o")%>%
+#  use_align("center")%>%use_rounded()
+p("in development")
+```
+<br>
+```{r}
+h4(tags$b("Reporting"),style=c("color:#044D94"))
+p("Monitoring data are analysed at a variety of spatial scales and must therefore be reported regionally using the template (see right) as a guide (see sections 2.2.1, 3.2.1 and 4.1.1).")
+
+
+#p <- ggplot(data = diamonds, aes(x = cut, fill = clarity)) +
+#            geom_bar(position = "dodge")
+#ggplotly(p)
+
+
+
+
+ 
+
+```
+
+
+***
+```{r, out.height="755px",out.width ="820"}
+
+h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
+
+ #fig.width = 9, fig.height=8
+knitr::include_graphics("www/rsmp_reporting_templatev3.pdf")  
+
+```
+
+### 14. Finally, results from monitoring are used, where necessary, to inform <b>adaptive management</b> decisions.
+
+- Results of monitoring should be used to determine if any management steps are required. What steps are are approprite will depend on the strength of the evidence and the link to dredging, the capacity for natural recovery and the importance of the affected assemblage.
+
+
