@@ -1039,9 +1039,9 @@ h4(tags$b("Supporting App"),style=c("color:#044D94"))
 ```{r}
 library(vembedr)
 library(dplyr)
-#embed_url("https://www.youtube.com/watch?v=NRTRsf6tj1o")%>%
-#  use_align("center")%>%use_rounded()
-p("in development")
+embed_url("https://youtu.be/iRCLWyAV3n8")%>%
+  use_align("center")%>%use_rounded()
+#p("in development")
 ```
 <br>
 ```{r}
