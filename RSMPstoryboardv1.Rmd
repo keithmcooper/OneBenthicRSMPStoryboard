@@ -1,9 +1,10 @@
 ---
 title: "RSMP Storyboard"
-output: 
+output:
   flexdashboard::flex_dashboard:
-    storyboard: true
-
+    storyboard: yes
+resource_files:
+- config.yml
 ---
 
 
@@ -215,7 +216,7 @@ fluidRow(
 
 column(6, thumbnail_label(image = 'www/monograph1_screenshot.png', label = '',
                                                content = 'Tillin, H. M., Houghton, A. J., Saunders, J. E. & Hull, S. C. (2011). Direct and Indirect Impacts of Marine Aggregate Dredging. Marine ALSF Science Monograph Series No. 1. MEPF 10/P144. (Edited by R. C. Newell & J. Measures). 41pp. ISBN: 978 0 907545 43 9.',
-                                               button_link = 'www/monograph1.pdf', button_label = 'Click me')),
+                                               button_link = 'https://www.marinedataexchange.co.uk/details/1613/2011-abp-marine-environmental-research-ltd-direct-and-indirect-impacts-of-aggregate-dredging/packages', button_label = 'Click me')),
 column(6, thumbnail_label(image = 'www/malsf2.png', label = '',
                                                content = 'Newell, R.C. and Woodcock, T.A. (Eds.). 2013. Aggregate Dredging and the Marine Environment: an overview of recent research and current industry practice. The Crown Estate, 165pp ISBN: 978-1-906410-41-4',
                                                button_link = 'https://www.bmapa.org/documents/Aggregate_Dredging_and_the_Marine_Environment.pdf', button_label = 'Click me')),
