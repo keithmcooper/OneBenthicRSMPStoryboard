@@ -200,6 +200,7 @@ p(HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),"Source:", a("http
 - Dredging may also change the topography of the seabed, through creation of dredge furrows and depressions. These features may become less visible over time, depending on local environmental conditions. 
 - Where the draghead makes contact with the seabed this results in removal of sediments and associated animal communities.
 - Understanding of the effects of marine aggregate dredging is underpinned by decades of research (see references opposite), most recently through the Aggregate Levy Sustainability Fund.
+- Given that impacts of aggregate dredging on the benthos are now reasonably well understood, it makes sense to focus attention more towards recovery, given the obvious link to sustainability. 
 
 
 
