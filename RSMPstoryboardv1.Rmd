@@ -985,6 +985,7 @@ h4(tags$b("Issue"),style=c("color:#044D94"))
 ```
 - Benthic faunal communities surrounding aggregate extraction sites serve an important role in the functioning of the wider ecosystem and are a source of adults and larvae for recolonisation of extraction sites after cessation of dredging.
 - One means of checking on the health of these communities is to monitor for changes in assemblage distribution. For example, are the patterns seen in the baseline tool still evident?
+- Note the tool below can also be used to assess faunal recovery of former dredging sites, following a suitable period for recovery, and where macrofaunal samples have been collected.
 ```{r}
 h4(tags$b("Supporting App"),style=c("color:#044D94"))
 ```
