@@ -343,13 +343,14 @@ fluidRow(
 column(6, thumbnail_label(image = 'www/collins_and_malinson_cover.png', label = '',
                                                content = 'Collins, K. and Mallinson, J., 2006. Use of shell to speed recovery of dredged aggregate seabed. In: Newell, R.C. and Garner, D.J. (Eds.), Marine aggregate dredging: helping to determine good practice. Marine Aggregate Levy Sustainability Fund (ALSF) conference proceedings: September 2006. Marine Aggregate Levy Sustainability Fund (ALSF) Conference Bath, UK, Marine Ecological Surveys Ltd., 152–155.',
                                                button_link = 'https://tethys.pnnl.gov/sites/default/files/publications/Nedwell_and_Garner_2006.pdf', button_label = 'Click me')),                     
+
 column(6, thumbnail_label(image = 'www/gravel_seeding.png', label = '',
                                                content = 'Cooper, K.M., Ware, S., Vanstaen, K. and Barry, J., 2011. Gravel seeding - A suitable technique for restoration of the seabed following marine aggregate dredging? Estuar. Coast. Shelf Sci. 91, 121-132.',
-                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me')),
+                                               button_link = 'https://www.sciencedirect.com/science/article/abs/pii/S0272771410003537?via%3Dihub', button_label = 'Click me')),
 
 column(6, thumbnail_label(image = 'www/benefits_costs.png', label = '',
                                                content = 'Cooper, K.M., Burdon, D., Atkins, J.P., Weiss, L., Somerfield, P., Elliott, M., Turner, K., Ware, S., Vivian, C., 2013. Can the benefits of physical seabed restoration justify the costs? An assessment of a disused aggregate extraction site off the Thames Estuary, UK. Mar. Pollut. Bull. 75, 33-45.',
-                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me'))
+                                               button_link = 'https://www.sciencedirect.com/science/article/abs/pii/S0025326X1300461X?via%3Dihub', button_label = 'Click me'))
         )
 #############
 ```
