@@ -383,10 +383,10 @@ fluidRow(
                      
 column(6, thumbnail_label(image = 'www/setting_limits.PNG', label = '',
                                                content = 'Cooper, K.M., 2012.  Setting limits for acceptable change in sediment particle size composition following marine aggregate dredging. Mar. Pollut. Bull. 64, 1667-1677.',
-                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me')),
+                                               button_link = 'https://doi.org/10.1016/j.marpolbul.2012.05.031', button_label = 'Click me')),
 column(6, thumbnail_label(image = 'www/setting_limits_testing.PNG', label = '',
                                                content = 'Cooper, K.M., 2013. Setting limits for acceptable change in sediment particle size composition: Testing a new approach to managing marine aggregate dredging? Mar. Pollut. Bull. 73, 86-97.',
-                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me'))
+                                               button_link = 'https://doi.org/10.1016/j.marpolbul.2013.05.034', button_label = 'Click me'))
 
 
         )
