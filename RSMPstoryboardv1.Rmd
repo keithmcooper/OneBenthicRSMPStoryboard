@@ -295,19 +295,15 @@ column(4, thumbnail_label(image = 'www/wan_hussin.png', label = '',
 
 column(4, thumbnail_label(image = 'www/asessment_p1_screenshot.PNG', label = '',
                                                content = 'Boyd, S.E., Cooper, K.M., Limpenny, D.S., Kilbride, R., Rees, H.L., Dearnaley, M.P., Stevenson, J., Meadows and Morris, C.D.  2004.  Assessment of the re-habilitation of the seabed following marine aggregate dredging.  Sci. Ser. Tech. Rep., CEFAS Lowestoft, 121: 151pp.',
-                                               button_link = 'www/cefas_tech121.pdf', button_label = 'Open')),
+                                               button_link = 'http://www.compendiumkustenzee.be/en/imis-mog?module=ref&refid=65874&printversion=1&dropIMIStitle=1', button_label = 'Open')),
 
 column(4, thumbnail_label(image = 'www/asessment_p2_screenshot.PNG', label = '',
                                                content = 'Cooper, K.M., Eggleton, J.D., Vize, S.J., Vanstaen, K., Smith, R., Boyd, S.E., Ware, S., Morris, C.D., Curtis, M., Limpenny, D.S. and Meadows, W.J., 2005. Assessment of the re-habilitation of the seabed following marine aggregate dredging - part II. Sci. Ser. Tech Rep., Cefas Lowestoft, 130: 82pp.',
-                                               button_link = 'www/cefas_tech130.pdf', button_label = 'Open')),
+                                               button_link = 'https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.214.3921&rep=rep1&type=pdf', button_label = 'Open')),
 
 column(4, thumbnail_label(image = 'www/assess_funct_screenshot.PNG', label = '',
                                                content = 'Cooper, K.M., Barrio Froján, C.R.S., Defew, E., Curtis, M., Fleddum, A., Brooks, L. and. Paterson, D.M., 2008. Assessment of ecosystem function following marine aggregate dredging. J. Exp. Mar. Biol. Ecol. 366, 82-91.',
-                                               button_link = 'https://www.academia.edu/12681009/Assessment_of_ecosystem_function_following_marine_aggregate_dredging', button_label = 'Open')),
-
-column(4, thumbnail_label(image = 'www/towardsanintegratedapproach.png', label = '',
-                                               content = 'McIlwaine, P. Barry, P., Curtis, M., Limpenny, C., Garcia, C., Cooper, K.M. 2020. Long-term seabed recovery after marine aggregate dredging. Marine Pollution Bulletin (in prep)',
-                                               button_link = 'https://www.nature.com/articles/s41598-017-11377-9', button_label = 'Click me'))
+                                               button_link = 'https://www.academia.edu/12681009/Assessment_of_ecosystem_function_following_marine_aggregate_dredging', button_label = 'Open'))
 
         )
 
