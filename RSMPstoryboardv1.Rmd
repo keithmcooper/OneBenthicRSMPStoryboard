@@ -843,7 +843,7 @@ library(dplyr)
 #ggplotly(p)
 embed_url("https://www.youtube.com/watch?v=_6BcR5amNEQ")%>%
   use_align("center")%>%use_rounded()
-embed_url("https://www.youtube.com/watch?v=yB6F9HNOUcM&t=26s")%>%
+embed_url("https://www.youtube.com/watch?v=SyrVoCqAlrI")%>%
   use_align("center")%>%use_rounded()
 
 br()
