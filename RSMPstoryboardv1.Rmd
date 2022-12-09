@@ -632,6 +632,60 @@ leaflet() %>%
 #                       color = "red",
 #                       stroke = FALSE, fillOpacity = 1)%>%
   ########
+
+  #addPolygons(data=agg,color = "#444444", weight = 2, smoothFactor = 0.5,group = "agg",popup = paste0("<b>Name: </b>", agg$Area_Name, "<br>",
+  #                                                                                                        "<b>Number: </b>", agg$Area_Numbe))%>%
+####
+#   addPolygons(data=agg,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (PIZ)",popup = paste0("<b>Name: </b>", agg$area_name, "<br>","<b>Number: </b>", agg$area_numbe))%>%
+ #     addPolygons(data=siz,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (SIZ)",popup = paste0("<b>Name: </b>", siz$area_name, "<br>","<b>Number: </b>", siz$area_numbe))%>%
+ #     addPolygons(data=ref,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (REF)",popup = paste0("<b>Name: </b>", ref$box, "<br>","<b>Status: </b>", ref$sub_region))%>% 
+  addPolygons(data=ref_anglian,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", ref_anglian$box, "<br>","<b>Status: </b>", ref_anglian$sub_region))%>%
+  addPolygons(data=agg_anglian,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", agg_anglian$area_name, "<br>","<b>Number: </b>", agg_anglian$area_numbe))%>%   addPolygons(data=siz_anglian,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", siz_anglian$area_name, "<br>","<b>Number: </b>", siz_anglian$area_numbe))%>%
+ 
+   addPolygons(data=ref_humber,color = "#444444", fillColor = "#89CFF0" ,weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", ref_humber$box, "<br>","<b>Status: </b>", ref_humber$sub_region))%>%
+  addPolygons(data=agg_humber,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", agg_humber$area_name, "<br>","<b>Number: </b>", agg_humber$area_numbe))%>% 
+  addPolygons(data=siz_humber,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", siz_humber$area_name, "<br>","<b>Number: </b>", siz_humber$area_numbe))%>%
+  
+  addPolygons(data=ref_thames,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", ref_thames$box, "<br>","<b>Status: </b>", ref_thames$sub_region))%>%
+  addPolygons(data=agg_thames,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", agg_thames$area_name, "<br>","<b>Number: </b>", agg_thames$area_numbe))%>% 
+  addPolygons(data=siz_thames,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", siz_thames$area_name, "<br>","<b>Number: </b>", siz_thames$area_numbe))%>% 
+    
+    addPolygons(data=ref_sc,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", ref_sc$box, "<br>","<b>Status: </b>", ref_sc$sub_region))%>%
+  addPolygons(data=agg_sc,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", agg_sc$area_name, "<br>","<b>Number: </b>", agg_sc$area_numbe))%>% 
+  addPolygons(data=siz_sc,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", siz_sc$area_name, "<br>","<b>Number: </b>", siz_sc$area_numbe))%>% 
+ 
+      addPolygons(data=ref_ec,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", ref_ec$box, "<br>","<b>Status: </b>", ref_ec$sub_region))%>%
+  addPolygons(data=agg_ec,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", agg_ec$area_name, "<br>","<b>Number: </b>", agg_ec$area_numbe))%>% 
+  addPolygons(data=siz_ec,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", siz_ec$area_name, "<br>","<b>Number: </b>", siz_ec$area_numbe))%>% 
+  
+        addPolygons(data=ref_gs,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", ref_gs$box, "<br>","<b>Status: </b>", ref_gs$sub_region))%>%
+  addPolygons(data=agg_gs,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", agg_gs$area_name, "<br>","<b>Number: </b>", agg_gs$area_numbe))%>% 
+  addPolygons(data=siz_gs,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", siz_gs$area_name, "<br>","<b>Number: </b>", siz_gs$area_numbe))%>% 
+  
+        addPolygons(data=ref_bc_476,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", ref_bc_476$box, "<br>","<b>Status: </b>", ref_bc_476$sub_region))%>%
+  addPolygons(data=agg_bc_476,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", agg_bc_476$area_name, "<br>","<b>Number: </b>", agg_bc_476$area_numbe))%>% 
+  addPolygons(data=siz_bc_476,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", siz_bc_476$area_name, "<br>","<b>Number: </b>", siz_bc_476$area_numbe))%>%   
+
+          addPolygons(data=ref_bc_531,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", ref_bc_531$box, "<br>","<b>Status: </b>", ref_bc_531$sub_region))%>%
+  addPolygons(data=agg_bc_531,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", agg_bc_531$area_name, "<br>","<b>Number: </b>", agg_bc_531$area_numbe))%>% 
+  addPolygons(data=siz_bc_531,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", siz_bc_531$area_name, "<br>","<b>Number: </b>", siz_bc_531$area_numbe))%>%   
+  
+            addPolygons(data=ref_bc_455_459_Bedywn,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", ref_bc_455_459_Bedywn$box, "<br>","<b>Status: </b>",ref_bc_455_459_Bedywn$sub_region))%>%
+  addPolygons(data=agg_bc_455_459_Bedywn,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", agg_bc_455_459_Bedywn$area_name, "<br>","<b>Number: </b>", agg_bc_455_459_Bedywn$area_numbe))%>% 
+  addPolygons(data=siz_bc_455_459_Bedywn,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", siz_bc_455_459_Bedywn$area_name, "<br>","<b>Number: </b>", siz_bc_455_459_Bedywn$area_numbe))%>%
+  
+            addPolygons(data=ref_bc_526,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", ref_bc_526$box, "<br>","<b>Status: </b>", ref_bc_526$sub_region))%>%
+  addPolygons(data=agg_bc_526,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", agg_bc_526$area_name, "<br>","<b>Number: </b>", agg_bc_526$area_numbe))%>% 
+  addPolygons(data=siz_bc_526,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", siz_bc_526$area_name, "<br>","<b>Number: </b>", siz_bc_526$area_numbe))%>%   
+  
+            addPolygons(data=ref_nw_392_393,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", ref_nw_392_393$box, "<br>","<b>Status: </b>", ref_nw_392_393$sub_region))%>%
+  addPolygons(data=agg_nw_392_393,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", agg_nw_392_393$area_name, "<br>","<b>Number: </b>", agg_nw_392_393$area_numbe))%>% 
+  addPolygons(data=siz_nw_392_393,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", siz_nw_392_393$area_name, "<br>","<b>Number: </b>", siz_nw_392_393$area_numbe))%>%   
+  
+              addPolygons(data=ref_nw_457,color = "#444444", fillColor = "#89CFF0", weight = 1,fillOpacity = 0.5, smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", ref_nw_457$box, "<br>","<b>Status: </b>", ref_nw_457$sub_region))%>%
+  addPolygons(data=agg_nw_457,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", agg_nw_457$area_name, "<br>","<b>Number: </b>", agg_nw_457$area_numbe))%>% 
+  addPolygons(data=siz_nw_457,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", siz_nw_457$area_name, "<br>","<b>Number: </b>", siz_nw_457$area_numbe))%>%  
+  
 addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Anglian RSMP', ],~stationlong,~stationlat,
                        popup = paste0("<b>Station Code: </b>",stations[stations$stationsubgroup1 == 'Anglian RSMP', ]$stationcode,"<br>",
                                       "<b>Survey: </b>",stations[stations$stationsubgroup1 == 'Anglian RSMP', ]$stationsubgroup1
@@ -757,59 +811,7 @@ addCircleMarkers(data = stations[stations$stationsubgroup1 == 'Goodwin Sands RSM
                        color = "blue",
                        stroke = FALSE, fillOpacity = 1)%>%
 ########
-  #addPolygons(data=agg,color = "#444444", weight = 2, smoothFactor = 0.5,group = "agg",popup = paste0("<b>Name: </b>", agg$Area_Name, "<br>",
-  #                                                                                                        "<b>Number: </b>", agg$Area_Numbe))%>%
-####
-#   addPolygons(data=agg,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (PIZ)",popup = paste0("<b>Name: </b>", agg$area_name, "<br>","<b>Number: </b>", agg$area_numbe))%>%
- #     addPolygons(data=siz,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (SIZ)",popup = paste0("<b>Name: </b>", siz$area_name, "<br>","<b>Number: </b>", siz$area_numbe))%>%
- #     addPolygons(data=ref,color = "#444444", weight = 1, smoothFactor = 0.5,group = "agg (REF)",popup = paste0("<b>Name: </b>", ref$box, "<br>","<b>Status: </b>", ref$sub_region))%>% 
-  addPolygons(data=ref_anglian,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", ref_anglian$box, "<br>","<b>Status: </b>", ref_anglian$sub_region))%>%
-  addPolygons(data=agg_anglian,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", agg_anglian$area_name, "<br>","<b>Number: </b>", agg_anglian$area_numbe))%>%   addPolygons(data=siz_anglian,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Anglian",popup = paste0("<b>Name: </b>", siz_anglian$area_name, "<br>","<b>Number: </b>", siz_anglian$area_numbe))%>%
- 
-   addPolygons(data=ref_humber,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", ref_humber$box, "<br>","<b>Status: </b>", ref_humber$sub_region))%>%
-  addPolygons(data=agg_humber,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", agg_humber$area_name, "<br>","<b>Number: </b>", agg_humber$area_numbe))%>% 
-  addPolygons(data=siz_humber,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Humber",popup = paste0("<b>Name: </b>", siz_humber$area_name, "<br>","<b>Number: </b>", siz_humber$area_numbe))%>%
-  
-  addPolygons(data=ref_thames,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", ref_thames$box, "<br>","<b>Status: </b>", ref_thames$sub_region))%>%
-  addPolygons(data=agg_thames,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", agg_thames$area_name, "<br>","<b>Number: </b>", agg_thames$area_numbe))%>% 
-  addPolygons(data=siz_thames,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Thames",popup = paste0("<b>Name: </b>", siz_thames$area_name, "<br>","<b>Number: </b>", siz_thames$area_numbe))%>% 
-    
-    addPolygons(data=ref_sc,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", ref_sc$box, "<br>","<b>Status: </b>", ref_sc$sub_region))%>%
-  addPolygons(data=agg_sc,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", agg_sc$area_name, "<br>","<b>Number: </b>", agg_sc$area_numbe))%>% 
-  addPolygons(data=siz_sc,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "South Coast",popup = paste0("<b>Name: </b>", siz_sc$area_name, "<br>","<b>Number: </b>", siz_sc$area_numbe))%>% 
- 
-      addPolygons(data=ref_ec,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", ref_ec$box, "<br>","<b>Status: </b>", ref_ec$sub_region))%>%
-  addPolygons(data=agg_ec,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", agg_ec$area_name, "<br>","<b>Number: </b>", agg_ec$area_numbe))%>% 
-  addPolygons(data=siz_ec,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "East Channel",popup = paste0("<b>Name: </b>", siz_ec$area_name, "<br>","<b>Number: </b>", siz_ec$area_numbe))%>% 
-  
-        addPolygons(data=ref_gs,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", ref_gs$box, "<br>","<b>Status: </b>", ref_gs$sub_region))%>%
-  addPolygons(data=agg_gs,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", agg_gs$area_name, "<br>","<b>Number: </b>", agg_gs$area_numbe))%>% 
-  addPolygons(data=siz_gs,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Goodwin Sands RSMP",popup = paste0("<b>Name: </b>", siz_gs$area_name, "<br>","<b>Number: </b>", siz_gs$area_numbe))%>% 
-  
-        addPolygons(data=ref_bc_476,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", ref_bc_476$box, "<br>","<b>Status: </b>", ref_bc_476$sub_region))%>%
-  addPolygons(data=agg_bc_476,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", agg_bc_476$area_name, "<br>","<b>Number: </b>", agg_bc_476$area_numbe))%>% 
-  addPolygons(data=siz_bc_476,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (476)",popup = paste0("<b>Name: </b>", siz_bc_476$area_name, "<br>","<b>Number: </b>", siz_bc_476$area_numbe))%>%   
 
-          addPolygons(data=ref_bc_531,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", ref_bc_531$box, "<br>","<b>Status: </b>", ref_bc_531$sub_region))%>%
-  addPolygons(data=agg_bc_531,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", agg_bc_531$area_name, "<br>","<b>Number: </b>", agg_bc_531$area_numbe))%>% 
-  addPolygons(data=siz_bc_531,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (531)",popup = paste0("<b>Name: </b>", siz_bc_531$area_name, "<br>","<b>Number: </b>", siz_bc_531$area_numbe))%>%   
-  
-            addPolygons(data=ref_bc_455_459_Bedywn,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", ref_bc_455_459_Bedywn$box, "<br>","<b>Status: </b>",ref_bc_455_459_Bedywn$sub_region))%>%
-  addPolygons(data=agg_bc_455_459_Bedywn,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", agg_bc_455_459_Bedywn$area_name, "<br>","<b>Number: </b>", agg_bc_455_459_Bedywn$area_numbe))%>% 
-  addPolygons(data=siz_bc_455_459_Bedywn,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (455, 459, Bedywn)",popup = paste0("<b>Name: </b>", siz_bc_455_459_Bedywn$area_name, "<br>","<b>Number: </b>", siz_bc_455_459_Bedywn$area_numbe))%>%
-  
-            addPolygons(data=ref_bc_526,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", ref_bc_526$box, "<br>","<b>Status: </b>", ref_bc_526$sub_region))%>%
-  addPolygons(data=agg_bc_526,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", agg_bc_526$area_name, "<br>","<b>Number: </b>", agg_bc_526$area_numbe))%>% 
-  addPolygons(data=siz_bc_526,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Bristol Channel (526)",popup = paste0("<b>Name: </b>", siz_bc_526$area_name, "<br>","<b>Number: </b>", siz_bc_526$area_numbe))%>%   
-  
-            addPolygons(data=ref_nw_392_393,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", ref_nw_392_393$box, "<br>","<b>Status: </b>", ref_nw_392_393$sub_region))%>%
-  addPolygons(data=agg_nw_392_393,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", agg_nw_392_393$area_name, "<br>","<b>Number: </b>", agg_nw_392_393$area_numbe))%>% 
-  addPolygons(data=siz_nw_392_393,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "Hilbre Swash (Area 392_393)",popup = paste0("<b>Name: </b>", siz_nw_392_393$area_name, "<br>","<b>Number: </b>", siz_nw_392_393$area_numbe))%>%   
-  
-              addPolygons(data=ref_nw_457,color = "#444444", weight = 1,fillOpacity = 0, smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", ref_nw_457$box, "<br>","<b>Status: </b>", ref_nw_457$sub_region))%>%
-  addPolygons(data=agg_nw_457,color = "#444444", weight = 1, fillOpacity = 0.2,smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", agg_nw_457$area_name, "<br>","<b>Number: </b>", agg_nw_457$area_numbe))%>% 
-  addPolygons(data=siz_nw_457,color = "#444444", weight = 1, fillOpacity = 0,smoothFactor = 0.5,group = "North West (457)",popup = paste0("<b>Name: </b>", siz_nw_457$area_name, "<br>","<b>Number: </b>", siz_nw_457$area_numbe))%>%  
-  
   ######
       addLayersControl(
       overlayGroups = c("Humber","Anglian","Thames","Goodwin Sands RSMP","South Coast","East Channel","Bristol Channel (476)","Bristol Channel (455, 459, Bedywn)","Bristol Channel (526)","Bristol Channel (531)","Hilbre Swash (Area 392_393)","North West (457)"),options = layersControlOptions(collapsed = FALSE))%>%#"wave_cab",
