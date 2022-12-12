@@ -500,13 +500,13 @@ h4(tags$b("Surveys"),style=c("color:#365F91"))
 - During monitoring, stations within PIZ, SIZ and Reference are only sampled for sediment particle size. The logic behind this practice is that, if sedimentary conditions within the footprint of potential dredging effect remain within the regional range (i.e., the pre-defined limits of acceptable change have not been exceeded during dredging), then it should be possible for a return of the original faunal assemblage type after dredging has ceased. Reference sites provide a perspective on natural or non-dredging related change - this is important to aid interpretation of data from the PIZ/SIZ.
 
 
-- All samples are collected and processed in accordance with a strict <a href="www/RSMP_Protocols.pdf">protocols</a> document, including quality control steps.
+- All samples are collected and processed in accordance with a strict <a href="/www/RSMP_Protocols.pdf">protocols</a> document, including quality control steps.
 ```{r, echo=FALSE,out.width="20%", fig.align='center'}
+
 include_graphics("www/protocols_cover.PNG")
 ```
 
 - Collected data are stored within the OneBenthic database, and a series of web apps are used for analysis of data (see following tabs).
-
 
 ***
 
