@@ -504,9 +504,12 @@ h4(tags$b("Surveys"),style=c("color:#365F91"))
 ```{r, echo=FALSE,out.width="20%", fig.align='center'}
 
 include_graphics("www/protocols_cover.PNG")
+
+tags$iframe(style="height:400px; width:100%; scrolling:yes", src="www/RSMP_Protocols.pdf")
 ```
 
 - Collected data are stored within the OneBenthic database, and a series of web apps are used for analysis of data (see following tabs).
+tags$iframe(style="height:400px; width:100%; scrolling:yes", src="www/RSMP_Protocols.pdf")
 
 
 ***
@@ -579,8 +582,8 @@ anglian <- stations[which(stations$stationsubgroup1 == 'Anglian RSMP' ),]
 #__________________________________________________________________________________________
 
 ref <- st_read(pool, query = "SELECT * FROM spatial.ref_box_all;")
-siz<- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas_siz;")
-agg <- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas;")
+siz<- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas_siz where droped = false;")
+agg <- st_read(pool, query = "SELECT * FROM ap_marine_aggregate.extraction_areas where droped = false;")
 ref_anglian <- ref[which(ref$region=='Anglian'),]
 agg_anglian <- agg[which(agg$region=='Anglian RSMP'),]
 siz_anglian <- siz[which(siz$region=='Anglian RSMP'),]
