@@ -121,7 +121,7 @@ library(DBI)
 library(pool)
 library(RPostgreSQL)
 library(glue)
-library(postGIStools)
+#library(postGIStools)
 library(config)
 library(knitr)
 library(shinyLP)
@@ -538,7 +538,7 @@ library(DBI)
 library(pool)
 library(RPostgreSQL)
 library(glue)
-library(postGIStools)
+#library(postGIStools)
 library(config)
 library(knitr)
 library(shinyLP)
@@ -934,7 +934,7 @@ h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
 
  #fig.width = 9, fig.height=8
 #knitr::include_graphics("www/grosssed_reporting.pdf") 
-knitr::include_graphics("www/rsmp_reporting_templatev3.pdf") 
+knitr::include_graphics("www/rsmp_reporting_templatev4.pdf") 
 ```
 
 ### 11. and ii) whether local sediment change is likely to be <b>ecological significanct (M-test)</b>. {data-commentary-width=830}
@@ -980,7 +980,7 @@ h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
 
  #fig.width = 9, fig.height=8
 #knitr::include_graphics("www/grosssed_reporting.pdf") 
-knitr::include_graphics("www/rsmp_reporting_templatev3.pdf") 
+knitr::include_graphics("www/rsmp_reporting_templatev4.pdf") 
 
 ```
 
@@ -1024,7 +1024,7 @@ h4(tags$b("Reporting"),style=c("color:#044D94"))
 h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
 
  #fig.width = 9, fig.height=8
-knitr::include_graphics("www/rsmp_reporting_templatev3.pdf")  
+knitr::include_graphics("www/rsmp_reporting_templatev4.pdf")  
 
 ```
 
@@ -1082,7 +1082,7 @@ p("Monitoring data should be reported regionally using the template (see right) 
 h4(tags$b("Reporting Template"),style=c("color:#044D94"),align = 'center')
 
  #fig.width = 9, fig.height=8
-knitr::include_graphics("www/rsmp_reporting_templatev3.pdf")  
+knitr::include_graphics("www/rsmp_reporting_templatev4.pdf")  
 
 ```
 
