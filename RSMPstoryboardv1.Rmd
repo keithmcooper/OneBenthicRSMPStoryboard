@@ -502,7 +502,7 @@ h4(tags$b("Surveys"),style=c("color:#365F91"))
 
 - All samples are collected and processed in accordance with a strict <a href="./www/RSMP_Protocols.pdf">protocols</a> document, including quality control steps.
 ```{r, echo=FALSE,out.width="30%", fig.align='center'}
-include_graphics("www/protocols_cover.png")
+include_graphics("www/protocols_cover.PNG")
 
 ```
 
