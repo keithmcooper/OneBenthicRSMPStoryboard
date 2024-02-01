@@ -488,7 +488,7 @@ include_graphics("www/HumberRSMPMap.PNG")
 - Survey arrays are stored in the <a href="https://rconnect.cefas.co.uk/onebenthic_surveyarray/">Survey Array Tool.</a>
 <br>
 <br>
-```{r, echo=FALSE,out.width="50%", fig.align='center'}
+```{r, echo=FALSE,out.width="60%", fig.align='center'}
 include_graphics("www/OB_surveyarraytool.png")
 ```
 <br>
