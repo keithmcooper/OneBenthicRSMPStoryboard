@@ -485,7 +485,7 @@ include_graphics("www/HumberRSMPMap.PNG")
 
 - Where possible, stations will be established at previously sampled sites, reducing the need for collection of new macrofaunal samples. 
 
-- Survey arrays are stored in the Survey Array Tool (https://rconnect.cefas.co.uk/onebenthic_surveyarray/).
+- Survey arrays are stored in the <a href="https://rconnect.cefas.co.uk/onebenthic_surveyarray/">Survey Array Tool.</a>
 <br>
 <br>
 ```{r, echo=FALSE,out.width="50%", fig.align='center'}
