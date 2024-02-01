@@ -502,9 +502,9 @@ h4(tags$b("Surveys"),style=c("color:#365F91"))
 - Sites are then monitored once every 5 years. During these surveys, macrofaunal samples are only required from the context area. These samples fulfill two objectives: (i) to ascertain and ensure that an un-impacted faunal assemblages remain within the wider region (this is important as these assemblage will play an important role in the recolonisation after dredging has ceased), and (ii) over time, the acquired time-series data will show the capacity of the region to cope with the level of anthropogenic pressure, be it from aggregate dredging or other sources.
 - During monitoring, stations within PIZ, SIZ and Reference are only sampled for sediment particle size. The logic behind this practice is that, if sedimentary conditions within the footprint of potential dredging effect remain within the regional range (i.e., the pre-defined limits of acceptable change have not been exceeded during dredging), then it should be possible for a return of the original faunal assemblage type after dredging has ceased. Reference sites provide a perspective on natural or non-dredging related change - this is important to aid interpretation of data from the PIZ/SIZ.
 
-- All samples are collected and processed in accordance with a strict <a href=https://rconnect.cefas.co.uk/RSMP/www/RSMP_Protocols.pdf>Protocols</a> document, including quality control steps.
+- All samples are collected and processed in accordance with a strict <b>RSMP Protocols</b> document which can be accessed using the <a href=https://rconnect.cefas.co.uk/onebenthic_surveyarray/>OneBenthic Survey Array Tool</a>  (see 'Protocols' tab).
 ```{r, echo=FALSE,out.width="30%", fig.align='center'}
-#include_graphics("www/protocols_cover.PNG")
+include_graphics("www/protocols_cover.PNG")
 
 ```
 
