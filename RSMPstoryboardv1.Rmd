@@ -183,7 +183,6 @@ h4(tags$b("Research"),style=c("color:#365F91"))
 - Potential direct and indirect effects of marine aggregate dredging are neatly presented in the figure below.
 <br>
 <br>
-
 ```{r, echo=FALSE,out.width="80%", fig.align='center'}
 #include_graphics("www/malsf2.png")
 include_graphics("www/env_effects2.png")
@@ -192,7 +191,6 @@ br()
 
 p(HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),HTML('&emsp;'),"Source:", a("https://addyst.blogspot.co.uk/2015/01/marine-dredged-aggregates.html", href = "https://addyst.blogspot.co.uk/2015/01/marine-dredged-aggregates.html"))
 ```
-<br>
 <br>
 
 - Dredge plumes may occur at the surface as a result of overspill or screening, or at the bed as a result of contact of the dredge pipe. 
