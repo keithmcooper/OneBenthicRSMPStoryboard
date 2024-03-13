@@ -992,7 +992,7 @@ knitr::include_graphics("www/rsmp_reporting_templatev4.pdf")
 #h4("Question",style=c("color:#044D94"))
 
 #br()
-h2(tags$b("Faunal Assemblage Distibution"),style=c("color:#365F91"))
+h2(tags$b("Faunal Assemblage Distribution"),style=c("color:#365F91"))
 h4(tags$b("Issue"),style=c("color:#044D94"))
 
 ```
