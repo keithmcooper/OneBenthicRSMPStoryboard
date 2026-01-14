@@ -5,8 +5,9 @@ output:
     storyboard: yes
 resource_files:
 - config.yml
+- www/RSMP_Protocols.pdf
+- www/rsmp_advive_note_m_test_interpretation_v1.0.pdf
 ---
-
 
 
 ### 1. This app provides an overview of the <b>Regional Seabed Monitoring Programme</b>, an innovative approach to compliance monitoring adopted by the UK marine aggregate dredging sector.{data-commentary-width=450}
