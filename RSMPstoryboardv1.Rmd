@@ -3,7 +3,10 @@ title: "RSMP Storyboard"
 output:
   flexdashboard::flex_dashboard:
     storyboard: yes
-
+resource_files:
+  - config.yml
+  - www/RSMP_Protocols.pdf
+  - www/rsmp_advive_note_m_test_interpretation_v1.0.pdf
 ---
 
 
