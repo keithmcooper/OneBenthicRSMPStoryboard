@@ -1091,3 +1091,32 @@ knitr::include_graphics("www/rsmp_reporting_templatev4.pdf")
 - Results of monitoring should be used to determine if any management steps are required. What steps are are approprite will depend on the strength of the evidence and the link to dredging, the capacity for natural recovery and the importance of the affected assemblage.
 
 
+### RSMP Guidance Notes
+
+
+```{r}
+h2(tags$b("Guidance Notes"),style=c("color:#044D94"))
+# Link to open the PDF in a new browser tab
+
+p("These guidance notes provide clear, shared instructions to help all parties—analysts, operators, regulators, and environmental managers—follow consistent sampling protocols and interpret RSMP results, ensuring a common understanding and approach across the programme.")
+br()
+# Indented PDF link
+tags$div(
+  style = "margin-left: 20px;",  # adjust px for more/less indent
+  tags$a(
+    href = "www/RSMP Protocols.pdf",  # file in www folder
+    target = "_blank",  # opens in new tab
+    "1. RSMP Protocol for Sample Collection and Processing (Version 9.0) PDF"
+  )
+)
+br()
+# Indented PDF link
+tags$div(
+  style = "margin-left: 20px;",  # adjust px for more/less indent
+  tags$a(
+    href = "rsmp_advive_note_m_test_interpretation_v1.0.pdf",  # file in www folder
+    target = "_blank",  # opens in new tab
+    "2. Interpreting and Responding to Mahalanobis (M-test) Sediment Flags (Version 1.0) PDF"
+  )
+)
+```
