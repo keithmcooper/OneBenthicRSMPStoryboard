@@ -1099,11 +1099,11 @@ h2(tags$b("Guidance Notes"),style=c("color:#044D94"))
 
 p("These guidance notes provide clear, shared instructions to help all parties—analysts, operators, regulators, and environmental managers—follow consistent sampling protocols and interpret RSMP results, ensuring a common understanding and approach across the programme.")
 br()
-# Indented PDF link
+# Indented PDF link (pdfs have to be hosted to display in a storyboard. Use https://pdfhost.io/)
 tags$div(
   style = "margin-left: 20px;",  # adjust px for more/less indent
   tags$a(
-    href = "RSMP_Protocols.pdf",  # file in www folder
+    href = "https://pdfhost.io/v/E6xs2nM66j_RSMP_Protocols",  # file in www folder
     target = "_blank",  # opens in new tab
     "1. RSMP Protocol for Sample Collection and Processing (Version 9.0) PDF"
   ),
@@ -1113,7 +1113,7 @@ br(),br(),
 
   style = "margin-left: 20px;",  # adjust px for more/less indent
   tags$a(
-    href = "rsmp_advive_note_m_test_interpretation_v1.0.pdf",  # file in www folder
+    href = "https://pdfhost.io/v/cDSnt4mX5h_rsmp_advive_note_m_test_interpretation_v1_0",  # file in www folder
     target = "_blank",  # opens in new tab
     "2. Interpreting and Responding to Mahalanobis (M-test) Sediment Flags (Version 1.0) PDF"
   )
